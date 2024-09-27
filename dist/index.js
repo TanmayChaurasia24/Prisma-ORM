@@ -31,4 +31,39 @@ function insertUser(username, password, firstName, lastName, email) {
         }
     });
 }
-insertUser('tanmay', 'dasdsa43$#*BD', 'tanmay', 'kumar', 'tkmm@example.com');
+// insertUser('tanmay', 'dasdsa43$#*BD', 'tanmay', 'kumar', 'tkmm@example.com');
+function createTodo(userId, title, description) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const response = yield prisma.todo.create({
+                data: {
+                    userId,
+                    title,
+                    description
+                }
+            });
+            console.log("todo created: ", response);
+            return response;
+        }
+        catch (error) {
+            console.log("error", error);
+        }
+    });
+}
+createTodo(1, "go to gym", "go to gym and do 10 pushups");
+function getTodosAndUserDetails(userId) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const todos = yield prisma.todo.findMany({
+            where: {
+                userId: userId,
+            },
+            select: {
+                user: true,
+                title: true,
+                description: true
+            }
+        });
+        console.log(todos);
+    });
+}
+getTodosAndUserDetails(1);
